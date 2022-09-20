@@ -65,18 +65,22 @@ jobs:
               echo "At workspace: ${env}"
               echo "=================================="
               plan=$(terraform plan -no-color)
+              plan="${plan//'%'/'%25'}"
+              plan="${plan//$'\n'/'%0A'}"
+              plan="${plan//$'\r'/'%0D'}"
               echo $plan
 
               terraform workspace select ${env} || terraform workspace new ${env}
-              plan_info="$plan_info\n==>environment: ${{ github.head_ref	}} workspace: ${env}<==\n$plan"
+              plan_info="$plan_info\n\n==>environment: ${{ github.head_ref }}, workspace: ${env}<==\n$plan"
             done
           else
-            plan_info="$(terraform plan -no-color)"
+            plan="$(terraform plan -no-color)"
+            plan="${plan//'%'/'%25'}"
+            plan="${plan//$'\n'/'%0A'}"
+            plan="${plan//$'\r'/'%0D'}"
+            echo $plan
+            plan_info="$plan"
           fi
-
-          plan_info="${plan_info//'%'/'%25'}"
-          plan_info="${plan_info//$'\n'/'%0A'}"
-          plan_info="${plan_info//$'\r'/'%0D'}"
           echo "::set-output name=plan_info::$plan_info"
         continue-on-error: true
 

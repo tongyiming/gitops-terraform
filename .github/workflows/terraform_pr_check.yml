@@ -66,6 +66,7 @@ jobs:
               echo "=================================="
               terraform workspace select ${env} || terraform workspace new ${env}
               plan=$(terraform plan -no-color)
+              echo $plan
               plan="${plan//'%'/'%25'}"
               plan="${plan//$'\n'/'%0A'}"
               plan="${plan//$'\r'/'%0D'}"

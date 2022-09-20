@@ -71,7 +71,7 @@ jobs:
               plan="${plan//$'\r'/'%0D'}"
               echo $plan
 
-              plan_info="$plan_info\n\n==>environment: ${{ github.head_ref }}, workspace: ${env}<==\n$plan"
+              plan_info="$plan_info==>environment: ${{ github.head_ref }}, workspace: ${env}<==\n$plan\n\n"
             done
           else
             plan="$(terraform plan -no-color)"
